@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<h1>密码学课程设计</h1>
+<h4>{{ subtitle }}</h3>
+<hr />
+{% block crypt_content %}
+	{{ wtf.quick_form(form) }}
+{% endblock %}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ script | safe }}
+{% endblock %}

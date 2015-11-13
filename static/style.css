@@ -1,0 +1,11 @@
+body {
+	font-family: Consolas, Microsoft Yahei, sans-serif;
+}
+
+ul.homeworks {
+	font-size: 20px;
+}
+
+textarea.form-control {
+	height: 8em;
+}

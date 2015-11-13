@@ -1,0 +1,25 @@
+{% extends "crypt.html" %}
+
+{% block crypt_content %}
+	<div class="col-md-6">{{ super() }}</div>
+	<div class="col-md-6">
+		{% if freq_list %}
+		<table class="table table-bordered">
+			<thead>
+				<td>字母</td>
+				<td>原文频率</td>
+				<td>密文频率</td>
+			</thead>
+			<tbody>
+				{% for item in freq_list %}
+				<tr>
+					<td>{{ item[0] }}</td>
+					<td>{{ item[1] }}</td>
+					<td>{{ item[2] }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+	</div>
+{% endblock %}
