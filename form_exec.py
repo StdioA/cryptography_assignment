@@ -48,6 +48,7 @@ def exec_classic(form):
                             round(float(x[1][0])/count, 4),
                             round(float(x[1][1])/count, 4))
                          for x in freq_dict.items()]
+        freq_list.sort(key=lambda x: x[0])
         other_params["freq_list"] = freq_list
 
     return form, other_params
