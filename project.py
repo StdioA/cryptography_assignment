@@ -11,8 +11,7 @@ import cryptlib
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
-app.config["SECRET_KEY"] = "WTForm is What-The-F**k-form"
-app.config["BOOTSTRAP_SERVE_LOCAL"] = True
+app.config.from_envvar("FLASK-CONFIG")
 
 @app.route('/')
 def index():
@@ -42,4 +41,4 @@ def crypt(crypt_type):
                         **other_params)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
