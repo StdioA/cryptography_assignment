@@ -1,7 +1,9 @@
 # coding: utf-8
 
+from flask import flash
 import cryptlib
 from collections import defaultdict
+import base64
 
 def exec_form(ctype, form):
     answer = ""
@@ -9,8 +11,8 @@ def exec_form(ctype, form):
 
     if ctype == "classic":
         return exec_classic(form)
-    elif ctype == "aes":
-        return exec_aes(form)
+    elif ctype == "des":
+        return exec_des(form)
 
     return form, other_params
 
@@ -53,16 +55,26 @@ def exec_classic(form):
 
     return form, other_params
 
-def exec_aes(form):
+def exec_des(form):
     key = form.key.data
-    pc = cryptlib.AESCrypt(key)
     other_params = {}
     if form.encrypt.data:
         text = form.text.data
-        form.cipher.data = text
+        key = form.key.data
+
+        des = cryptlib.DES(key)
+        form.cipher.data = unicode(des.DES_encrypt(text.encode("utf-8")), 
+                            encoding="utf-8")
 
     elif form.decrypt.data:
         cipher = form.cipher.data
-        form.text.data = cipher
+        key = form.key.data
+
+        des = cryptlib.DES(key)
+        try:
+            form.text.data = unicode(des.DES_decrypt(cipher.encode("utf-8")),
+                            encoding="utf-8")
+        except base64.binascii.Error:
+            flash(u"密文格式错误，请检查密文格式！")
 
     return form, other_params

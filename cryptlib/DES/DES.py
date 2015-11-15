@@ -60,11 +60,6 @@ class DES(object):
             sub_key = self.sub_keys[turn]
             left, right = right, self._binstrxor(left, self._F(right, sub_key)) 
 
-            # print "key{t} {key}".format(t=turn, key=sub_key)
-            # print "Turn", turn
-            # print "Left ", left
-            # print "Right", right
-
         message = left + right
         message = self._IP_NEG(message)                                         # 进行逆初始置换IP^-1
         return message
@@ -78,12 +73,7 @@ class DES(object):
 
         for turn in reversed(range(16)):
             sub_key = self.sub_keys[turn]
-            # print "key{t} {key}".format(t=turn, key=sub_key)
             left, right = self._binstrxor(right, self._F(left, sub_key)), left
-
-            # print "Turn", turn
-            # print "Left ", left
-            # print "Right", right
 
         cipher = left+right
         cipher = self._IP_NEG(cipher)                                           # 进行逆初始置换IP^-1
@@ -93,11 +83,8 @@ class DES(object):
         """\
         DES核心加密函数F
         """
-        # print "array", array
         array = self._E(array)                                                  # 位选择, 32bit -> 48bit
-        # print "E array", array
         array = self._binstrxor(array, sub_key)                                 # 将序列与Ki异或
-        # print "Xor array", array
 
         temp_arr = array
         arrs = []
@@ -105,16 +92,12 @@ class DES(object):
             arrs.append(temp_arr[:6])                                           # 将序列分成8组，每组6位
             temp_arr = temp_arr[6:]
 
-        # print "array list", arrs
-
         finalarr = ""
         for index, b in enumerate(arrs):
             row = int(b[0]+b[5], base=2)
             col = int(b[1:5], base=2)
             output = constant.S[index][row][col]
             finalarr += bin(output)[2:].zfill(4)
-
-        # print "array list after s", finalarr
 
         array = self._P(finalarr)
 
@@ -258,11 +241,14 @@ class DES(object):
 
         return ans
 
+def test():
+    a = DES("1234567890abcd")
+    k = "试试中文Test for Chinese"
+    print k
+    t = a.DES_encrypt(k)
+    print t
+    s = a.DES_decrypt(t)
+    print s
 
-a = DES("1234567890abcd")
-k = "试试中文Test for Chinese"
-print k
-t = a.DES_encrypt(k)
-print t
-s = a.DES_decrypt(t)
-print s
+if __name__ == '__main__':
+    test()

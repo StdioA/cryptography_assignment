@@ -22,7 +22,7 @@ def index():
 def crypt(crypt_type):
     crypt_forms = {
         "classic": ClassicCryptForm,
-        "aes": AESCryptForm,
+        "des": DESCryptForm,
     }
     subtitles = {
         "classic": u"古典加密——仿射密码",

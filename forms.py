@@ -27,10 +27,10 @@ class ClassicCryptForm(Form):
 
 class DESCryptForm(Form):
     text = TextAreaField(u"请输入原文")
-    cipher = TextAreaField(u"请输入密文")
     key = StringField(u"请输入密钥 (14位16进制数字, 如11223344aabbcc)",
                          validators=[Required(), 
-                         Regexp(r"^[0-9a-fA-F]{16}$", "请输入14位16进制数字")])
-    encrypt = SubmitField(u"加密")
-    decrypt = SubmitField(u"解密") 
+                         Regexp(r"^[0-9a-fA-F]{14}$", message=u"请输入14位16进制数字")])
+    encrypt = SubmitField(u"加密 ↓")
+    decrypt = SubmitField(u"解密 ↑") 
+    cipher = TextAreaField(u"请输入密文")
 
