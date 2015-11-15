@@ -26,7 +26,7 @@ def crypt(crypt_type):
     }
     subtitles = {
         "classic": u"古典加密——仿射密码",
-        "aes": u"AES加密",
+        "des": u"DES加密",
     }
     
     form = (crypt_forms[crypt_type])()                                          # 对提交的表单进行处理（如加密）

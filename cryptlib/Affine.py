@@ -23,7 +23,7 @@ def __getNeg(u, n):
         b2 += n
     return b2
 
-def encrypt_affine(text, key1, key2):
+def affine_encrypt(text, key1, key2):
     text = text.lower()
     text_keys = __str_to_list(text)
     k = text_keys
@@ -32,7 +32,7 @@ def encrypt_affine(text, key1, key2):
     crypt_text = __list_to_str(crypt_keys)
     return crypt_text
 
-def decrypt_affine(text, key1, key2):
+def affine_decrypt(text, key1, key2):
     text = text.lower()
     neg_key2 = __getNeg(key2, 26)
     text_keys = __str_to_list(text)

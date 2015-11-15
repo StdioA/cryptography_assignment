@@ -23,16 +23,16 @@ def exec_classic(form):
     if form.encrypt.data:
         text = form.text.data
         form.text.data = ""
-        form.cipher.data = cryptlib.encrypt_affine(text, key1, key2)
+        form.cipher.data = cryptlib.affine_encrypt(text, key1, key2)
 
     elif form.decrypt.data:
         cipher = form.cipher.data
         form.cipher.data = ""
-        form.text.data = cryptlib.decrypt_affine(cipher, key1, key2)
+        form.text.data = cryptlib.affine_decrypt(cipher, key1, key2)
 
     elif form.stat.data:                                                    # 统计原文/密文中各字符的出现次数
         text = form.text.data.lower()
-        cipher = cryptlib.encrypt_affine(text, key1, key2)
+        cipher = cryptlib.affine_encrypt(text, key1, key2)
         form.cipher.data = cipher
 
         freq_dict = defaultdict(lambda: [0, 0])
