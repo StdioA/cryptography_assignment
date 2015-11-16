@@ -34,6 +34,8 @@ class DES(object):
         返回明文信息
         """
         cipher = base64.decodestring(cipher)
+        if len(cipher) % 8 != 0:                                               # 用NUL将密文补足64位
+            cipher += '\x00'*(8-len(cipher)%8)
 
         cipher_array = self._str2binarray(cipher)
         message_array = []

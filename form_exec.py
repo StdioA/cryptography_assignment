@@ -76,5 +76,8 @@ def exec_des(form):
                             encoding="utf-8")
         except base64.binascii.Error:
             flash(u"密文格式错误，请检查密文格式！")
+        except UnicodeDecodeError:
+            form.text.data = u""
+            flash(u"密文/密钥错误，无法进行解密！")
 
     return form, other_params
