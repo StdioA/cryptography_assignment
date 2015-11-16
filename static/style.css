@@ -9,3 +9,7 @@ ul.homeworks {
 textarea.form-control {
 	height: 8em;
 }
+
+.btn-default {
+	margin-bottom: 10px;
+}

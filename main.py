@@ -11,7 +11,7 @@ import cryptlib
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
-app.config.from_envvar("FLASK-CONFIG")
+app.config.from_envvar("FLASK_CONFIG")
 
 @app.route('/')
 def index():
