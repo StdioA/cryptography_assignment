@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import re
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, abort
 from flask.ext.bootstrap import Bootstrap
 
 from forms import *
@@ -22,10 +22,12 @@ def crypt(crypt_type):
     crypt_forms = {
         "classic": ClassicCryptForm,
         "des": DESCryptForm,
+        "rsa": RSACryptForm,
     }
     subtitles = {
         "classic": u"古典加密——仿射密码",
         "des": u"DES加密",
+        "rsa": u"RSA加密",
     }
     
     form = (crypt_forms[crypt_type])()                                          # 对提交的表单进行处理（如加密）
@@ -40,5 +42,15 @@ def crypt(crypt_type):
                         subtitle=subtitles[crypt_type],
                         **other_params)
 
+@app.route("/prime_test", methods=["POST"])
+def prime_test():
+    from cryptlib.RSA import is_prime
+    try:
+        number = int(request.form["number"])
+        times = int(request.form["times"])
+    except ValueError:
+        abort(400)
+    return str(is_prime(number, times))
+
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

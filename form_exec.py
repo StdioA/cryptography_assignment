@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from flask import flash
+from flask import flash, session
 import cryptlib
 from collections import defaultdict
 import base64
@@ -13,6 +13,8 @@ def exec_form(ctype, form):
         return exec_classic(form)
     elif ctype == "des":
         return exec_des(form)
+    elif ctype == "rsa":
+        return exec_rsa(form)
 
     return form, other_params
 
@@ -79,5 +81,22 @@ def exec_des(form):
         except UnicodeDecodeError:
             form.text.data = u""
             flash(u"密文/密钥错误，无法进行解密！")
+
+    return form, other_params
+
+def exec_rsa(form):
+    other_params = {}
+    if form.encrypt.data:
+        text = form.text.data.upper()
+
+        rsa = cryptlib.RSA()
+        form.cipher.data = unicode(rsa.RSA_encrypt(text.encode("utf-8")), 
+                            encoding="utf-8")
+
+    elif form.decrypt.data:
+        cipher = form.cipher.data
+        rsa = cryptlib.RSA()
+        form.text.data = unicode(rsa.RSA_decrypt(cipher.encode("utf-8")),
+                            encoding="utf-8")
 
     return form, other_params

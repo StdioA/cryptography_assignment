@@ -34,3 +34,10 @@ class DESCryptForm(Form):
     decrypt = SubmitField(u"解密 ↑") 
     cipher = TextAreaField(u"请输入密文")
 
+class RSACryptForm(Form):
+    text = TextAreaField(u"请输入原文", 
+                    validators=[Regexp(r"^[A-Za-z ]*$", message=u"仅支持字母与空格")],
+                    default=u"I LOVE NANJING UNIVERSITY OF AERONAUTICS AND ASTRONAUTICS")
+    encrypt = SubmitField(u"加密 ↓")
+    decrypt = SubmitField(u"解密 ↑") 
+    cipher = TextAreaField(u"请输入密文")
