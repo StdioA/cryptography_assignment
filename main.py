@@ -1,9 +1,10 @@
 # coding: utf-8
 
-import re
+import os
 from flask import Flask, render_template, request, url_for, abort
 from flask.ext.bootstrap import Bootstrap
 
+from config import config
 from forms import *
 from form_exec import *
 import cryptlib
@@ -11,7 +12,7 @@ import cryptlib
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
-app.config.from_envvar("FLASK_CONFIG")
+app.config.from_object(config[os.getenv("FLASK_CONFIG") or "default"])
 
 @app.route('/')
 def index():
@@ -52,5 +53,6 @@ def prime_test():
         abort(400)
     return str(is_prime(number, times))
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
