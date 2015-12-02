@@ -15,6 +15,8 @@ def exec_form(ctype, form):
         return exec_des(form)
     elif ctype == "rsa":
         return exec_rsa(form)
+    elif ctype == "lfsr":
+        return exec_lfsr(form)
 
     return form, other_params
 
@@ -98,5 +100,40 @@ def exec_rsa(form):
         rsa = cryptlib.RSA()
         form.text.data = unicode(rsa.RSA_decrypt(cipher.encode("utf-8")),
                             encoding="utf-8")
+
+    return form, other_params
+
+def exec_lfsr(form):
+    other_params = {}
+
+    # 产生生成序列
+    seq_list = []
+    for num in range(32):
+        seq_list.append(cryptlib.LFSR_gen_seq(num))
+    other_params["seq_list"] = seq_list
+
+    # key = 19
+    if form.validate_on_submit():
+        key = int(form.key.data)
+
+        if form.encrypt.data:
+            text = form.text.data
+
+            lfsr = cryptlib.LFSR(key)
+            form.cipher.data = unicode(lfsr.LFSR_encrypt(text.encode("utf-8")), 
+                                encoding="utf-8")
+
+        elif form.decrypt.data:
+            cipher = form.cipher.data
+
+            lfsr = cryptlib.LFSR(key)
+            try:
+                form.text.data = unicode(lfsr.LFSR_decrypt(cipher.encode("utf-8")),
+                                encoding="utf-8")
+            except base64.binascii.Error:
+                flash(u"密文格式错误，请检查密文格式！")
+            except UnicodeDecodeError:
+                form.text.data = u""
+                flash(u"密文/密钥错误，无法进行解密！")
 
     return form, other_params

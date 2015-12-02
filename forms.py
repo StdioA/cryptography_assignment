@@ -1,8 +1,8 @@
 # coding: utf-8
 
 from flask.ext.wtf import Form
-from wtforms import TextAreaField, StringField, SubmitField
-from wtforms.validators import Required, Regexp, ValidationError
+from wtforms import TextAreaField, StringField, SubmitField, DecimalField
+from wtforms.validators import Required, Regexp, NumberRange, ValidationError
 
 def validate_prime(form, field):
     def gcd(a, b):
@@ -38,6 +38,14 @@ class RSACryptForm(Form):
     text = TextAreaField(u"请输入原文", 
                     validators=[Regexp(r"^[A-Za-z ]*$", message=u"仅支持字母与空格")],
                     default=u"I LOVE NANJING UNIVERSITY OF AERONAUTICS AND ASTRONAUTICS")
+    encrypt = SubmitField(u"加密 ↓")
+    decrypt = SubmitField(u"解密 ↑") 
+    cipher = TextAreaField(u"请输入密文")
+
+class LFSRCryptForm(Form):
+    text = TextAreaField(u"请输入原文", 
+                    validators=[])
+    key = DecimalField(u"密钥", validators=[Required(), NumberRange(1, 31, u"密钥应为1-31的整数")])
     encrypt = SubmitField(u"加密 ↓")
     decrypt = SubmitField(u"解密 ↑") 
     cipher = TextAreaField(u"请输入密文")
