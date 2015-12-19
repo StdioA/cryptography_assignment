@@ -25,12 +25,14 @@ def crypt(crypt_type):
         "des": DESCryptForm,
         "rsa": RSACryptForm,
         "lfsr": LFSRCryptForm,
+        "dsa": DSASignForm,
     }
     subtitles = {
         "classic": u"古典加密——仿射密码",
         "des": u"DES加密",
         "rsa": u"RSA加密",
         "lfsr": u"序列密码",
+        "dsa": u"DSA数字签名",
     }
 
     if crypt_type not in subtitles:

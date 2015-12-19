@@ -49,3 +49,11 @@ class LFSRCryptForm(Form):
     encrypt = SubmitField(u"加密 ↓")
     decrypt = SubmitField(u"解密 ↑") 
     cipher = TextAreaField(u"请输入密文")
+
+class DSASignForm(Form):
+    text = TextAreaField(u"请输入需签名/认证的信息", validators=[Required()])
+    sha = StringField(u"信息SHA散列")
+    signature = StringField(u"DSA签名", validators=[])
+    sign = SubmitField(u"签名")
+    verify = SubmitField(u"验证")
+

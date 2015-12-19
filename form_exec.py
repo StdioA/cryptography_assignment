@@ -1,9 +1,14 @@
 # coding: utf-8
 
+import cPickle as pickle
+import base64
+from collections import defaultdict
 from flask import flash, session
 import cryptlib
-from collections import defaultdict
-import base64
+
+from Crypto.Random import random
+from Crypto.PublicKey import DSA
+from Crypto.Hash import SHA
 
 def exec_form(ctype, form):
     answer = ""
@@ -17,6 +22,8 @@ def exec_form(ctype, form):
         return exec_rsa(form)
     elif ctype == "lfsr":
         return exec_lfsr(form)
+    elif ctype == "dsa":
+        return exec_dsa(form)
 
     return form, other_params
 
@@ -135,5 +142,39 @@ def exec_lfsr(form):
             except UnicodeDecodeError:
                 form.text.data = u""
                 flash(u"密文/密钥错误，无法进行解密！")
+
+    return form, other_params
+
+def exec_dsa(form):
+    other_params = {}
+    message = form.text.data.encode("utf-8")
+
+    hash_ = SHA.new(message)
+    form.sha.data = hash_.hexdigest()
+    h = hash_.digest()
+
+    # 恢复key
+    if not session.get("key"):
+        key = DSA.generate(1024)
+        session["key"] = pickle.dumps(key)
+    else:
+        key = pickle.loads(session["key"])
+
+    if form.sign.data:
+        k = random.StrongRandom().randint(1,key.q-1)
+        sig = key.sign(h, k)
+        form.signature.data = "%s, %s"%(hex(sig[0])[2:-1], hex(sig[1])[2:-1])
+
+    elif form.verify.data:
+        ssig = form.signature.data.split(", ")
+        try:
+            sig = (int(ssig[0], base=16), int(ssig[1], base=16))
+        except (IndexError, UnicodeEncodeError):
+            flash(u"签名格式错误！")
+        else:
+            if key.verify(h, sig):
+                flash(u"签名验证成功！")
+            else:
+                flash(u"签名验证失败！")
 
     return form, other_params
